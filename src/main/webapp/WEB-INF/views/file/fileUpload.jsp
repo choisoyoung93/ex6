@@ -8,15 +8,20 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript">
 	$(function() {
-		var i = 1;
-		$("#add").click(function() {			
-			$("#file").append('<p class="'+i+'"><input type="file" name="f1"><span class="del" data-n="'+i+'">X</span></p>');
-			i++;
+		var i = 0;
+		var name = 0;
+		$("#add").click(function() {	
+			if(i>=5){
+				alert("그만");
+			}else{
+				i++;
+				name++;
+				$("#file").append('<p class="'+i+'"><input type="file" name="f'+name+'"><span class="del" data-n="'+i+'">X</span></p>');			
+			}
 		});
-		$("#file").on(".del", "click", function() {
-			alert("click");
-			var i = $(this).attr("data-n");
-			$("."+i).remove();
+		$("#file").on("click", ".del", function() {
+			var num = $(this).attr("data-n");
+			$("."+num).remove();
 			i--;
 		});
 	});
@@ -52,7 +57,7 @@
 		<div id="file">
 			
 		</div>
-		
+		<button>UPLOAD</button>
 	</form>
 </body>
 </html>
