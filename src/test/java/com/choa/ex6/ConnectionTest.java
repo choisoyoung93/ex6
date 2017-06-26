@@ -14,4 +14,6 @@ public class ConnectionTest extends MyAbstractTest{
 	public void test(){
 		assertNotNull(sqlSession);
 	}
+	
+	
 }

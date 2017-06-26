@@ -12,5 +12,6 @@
 <P>  The time on the server is ${serverTime}. </P>
 
 <a href="notice/noticeList">NOTICE LIST</a>
+<a href="memo/memoList">MEMO LIST</a>
 </body>
 </html>

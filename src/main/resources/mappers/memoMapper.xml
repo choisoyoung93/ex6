@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="memoMapper">
+	<!-- List -->
+	<select id="list" parameterType="com.choa.util.RowMaker" resultType="com.choa.memo.MemoDTO">
+		select * from (select ROWNUM R, M.* from 
+		(select * from MEMO2 order by NUM DESC) M) where R between #{startRow} and #{lastRow}
+	</select>
+	
+	<!-- View -->
+	<select id="view" parameterType="java.lang.Integer" resultType="com.choa.memo.MemoDTO">
+		select * from MEMO2 where NUM=#{num}
+	</select>
+	
+	<!-- Write -->
+	<insert id="write" parameterType="com.choa.memo.MemoDTO">
+		insert into MEMO2 values(memo_seq.nextval, #{writer}, #{contents}, sysdate)
+	</insert>
+	
+	<!-- Update -->
+	<update id="update" parameterType="com.choa.memo.MemoDTO">
+		update MEMO2 set CONTENTS=#{contents}, REG_DATE=sysdate where NUM=#{num}
+	</update>
+	
+	<!-- Delete -->
+	<delete id="delete" parameterType="java.lang.Integer">
+		delete from MEMO2 where NUM=#{num}
+	</delete>
+	
+	<!-- Count -->
+	<select id="count" parameterType="com.choa.util.RowMaker" resultType="java.lang.Integer">
+		select nvl(count(NUM), 0) from MEMO2
+	</select>
+</mapper>
