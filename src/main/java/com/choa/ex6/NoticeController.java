@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -33,10 +34,23 @@ public class NoticeController {
 		MakePage makePage = pageMaker.getMakePage(totalCount);
 		List<BoardDTO> boardList = noticeService.boardList(rowMaker);
 		
+		//try{
+			System.out.println(boardList.get(1000).getTitle());
+		//	throw new IndexOutOfBoundsException();
+		//}catch(Exception e){
+			
+		//}
+		
+		
 		model.addAttribute("board", "notice").addAttribute("boardList", boardList);
-		model.addAttribute("makePage", makePage).addAttribute("kind", listInfo.getKind()).addAttribute("search", listInfo.getSearch()).addAttribute("curPage", listInfo.getCurPage());
+		model.addAttribute("makePage", makePage);
 		return "board/boardList";
 	}
+	
+	/*@ExceptionHandler(Exception.class)
+	public String exception(){
+		return "error/notFound";
+	}*/
 	
 	@RequestMapping(value = "noticeView", method = RequestMethod.GET)
 	public String noticeView(Model model, Integer num) throws Exception{

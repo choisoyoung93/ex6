@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
    	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" id="propertyPlaceholderConfigurer">
@@ -31,4 +37,48 @@
       <property name="defaultEncoding" value="UTF-8"></property>
    	</bean>
    	
+   	<!-- 공통 로직 -->
+   	<!-- <bean class="com.choa.aspect.CardCheck" id="cardCheck"></bean> -->
+	
+   <!-- 	<aop:config>	전체적인 설정
+   		<aop:aspect id="cardAspect" ref="cardCheck">	공통 관심사항 (하나의 단위)
+   			<aop:pointcut expression="execution(* com.choa.aspect..Transport.*(..))" id="trans"/>				Advice를 적용할 부분집합
+   				
+   					.. : 해당 Class의 하위의 모든 Directory
+   					*() : 해당 Class의 하위의 모든 Method
+   					(..): 모든 매개변수( 있던 없던 )   		
+   		 		
+   		 	<aop:around method="check" pointcut-ref="trans"/> method의 순서
+   		</aop:aspect>
+   		
+   		<aop:aspect id="cardReserve" ref="cardCheck">
+   			<aop:pointcut expression="execution(* com.choa.aspect..Trip.*(..))" id="reserve"/>
+   			<aop:before method="reservation" pointcut-ref="reserve"/>
+   		</aop:aspect>
+   	</aop:config> -->
+   	
+   	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+   	
+   	<!-- 공통로직을 담고 있는 것 -->
+   <bean class="org.springframework.jdbc.datasource.DataSourceTransactionManager" id="transactionManager">
+      <property name="dataSource" ref="dataSource" />
+   </bean>
+   
+   <tx:annotation-driven transaction-manager="transactionManager"/>
+   
+  <!--   advice : 언제 공통사항을 적용할지
+   <tx:advice id="txAdvice" transaction-manager="txManager">
+      <tx:attributes>
+         <tx:method name="*" rollback-for="Exception"/>   exception이 발생할 때 rollbak을 적용
+      </tx:attributes>
+   </tx:advice>
+   
+   
+   <aop:config>
+      어디에 공통사항을 적용할지
+      <aop:pointcut expression="execution(* com.choa.table..TableService.*(..))" id="requiredTx"/>
+      <aop:advisor advice-ref="txAdvice" pointcut-ref="requiredTx"/>      
+   </aop:config> -->
+   
+   
 </beans>
